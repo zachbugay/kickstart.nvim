@@ -56,4 +56,4 @@ if sysName == "Windows_NT" then
   vim.opt.shellxquote = ""
 end
 
-print "Loaded custom options."
+print("Loaded custom options.")
