@@ -88,25 +88,25 @@ vim.opt.listchars = {
 vim.o.inccommand = "split"
 
 -- The width of a tab is set to 4
-vim.o.tabstop = 2 
+vim.o.tabstop = 2
 
 -- Indents will have a width of 4
-vim.o.shiftwidth = 2 
+vim.o.shiftwidth = 2
 
 -- Sets the number of columns for a TAB
-vim.o.softtabstop = 2 
+vim.o.softtabstop = 2
 
 -- Convert tabs to spaces
-vim.o.expandtab = true 
+vim.o.expandtab = true
 
 -- Automatically indent new lines
-vim.o.smartindent = true 
+vim.o.smartindent = true
 
 -- Speed up scrolling
-vim.o.ttyfast = true 
+vim.o.ttyfast = true
 
 -- Enable linewrap
-vim.o.wrap = true 
+vim.o.wrap = true
 
 -- Show which line your cursor is on
 vim.o.cursorline = true
@@ -124,7 +124,7 @@ vim.o.hlsearch = true
 vim.o.syntax = "on"
 
 -- Copy indent from current line when starting a new line.
-vim.o.autoindent = true 
+vim.o.autoindent = true
 
 vim.o.autowrite = true
 
