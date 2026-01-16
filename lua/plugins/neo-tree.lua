@@ -20,11 +20,11 @@ return {
     enable_diagnostics = true,
     filesystem = {
       filtered_items = {
+        never_show = {
+          ".DS_Store",
+        },
         visible = true,
         hide_hidden = false,
-      },
-      never_show = {
-        ".DS_Store",
       },
       window = {
         mappings = {

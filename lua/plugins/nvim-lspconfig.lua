@@ -110,6 +110,9 @@ return {
         --  the definition of its *type*, not where it was *defined*.
         map("grt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
 
+        -- Toggle to show/hide diagnostic messages
+          map('<leader>td', function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end, '[T]oggle [D]iagnostics')
+
         -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
         ---@param client vim.lsp.Client
         ---@param method vim.lsp.protocol.Method
@@ -205,7 +208,6 @@ return {
     -- vim.lsp.config
     ---@class LspServersConfig
     ---@field mason table<string, vim.lsp.Config>
-    ---@field others table<string, vim.lsp.Config>
     local servers = {
       mason = {
         bicep = {},
@@ -218,7 +220,7 @@ return {
             "--enable-config",
           },
         },
-        codebook = {},
+        codebook  = {},
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
@@ -229,7 +231,6 @@ return {
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
-        --
         harper_ls = {},
         lua_ls = {
           cmd = { "lua-language-server" },
@@ -251,10 +252,9 @@ return {
         roslyn = {},
         terraformls = {},
         tombi = {},
-      },
-      -- For LSPs installed outside of Mason.
-      others = {},
+      }
     }
+
     -- Ensure the servers and tools above are installed
     --
     -- To check the current status of installed tools and/or manually install
@@ -277,23 +277,23 @@ return {
 
     ---@param value string
     ---@return boolean
-    local function remove_x86_only_if_arm_processor(value)
+    local function x86_only(value)
       ---@type string[]
-      local x86_only = { "clangd", "lua_ls", "stylua" }
-      if string.find(vim.uv.os_uname().machine, "unknown") and (vim.tbl_contains(x86_only, value)) then
+      local x86_lsps = { "clangd", "lua_ls", "stylua", "codebook", "harper_ls", "roslyn", "terraformls", "tombi" }
+      if string.find(vim.uv.os_uname().machine, "unknown") and (vim.tbl_contains(x86_lsps, value)) then
         return false
       end
       return true
     end
 
     ---@type string[]
-    ensure_installed = vim.tbl_filter(remove_x86_only_if_arm_processor, ensure_installed)
+    ensure_installed = vim.tbl_filter(x86_only, ensure_installed)
     require("mason-tool-installer").setup({ ensure_installed = ensure_installed, auto_update = true })
 
     -- Either merge all additional server configs from the `servers.mason` and `servers.others` tables
     -- to the default language server configs as provided by nvim-lspconfig
     -- or define a custom server config that's unavailable on nvim-lspconfig
-    for server, config in pairs(vim.tbl_extend("keep", servers.mason, servers.others)) do
+    for server, config in pairs(servers.mason) do
       if not vim.tbl_isempty(config) then
         vim.lsp.config(server, config)
       end
@@ -305,14 +305,10 @@ return {
       automatic_enable = true,
     })
 
-    for other_server, config in pairs(servers.others) do
-      vim.notify("Enabling other LSP: " .. other_server, vim.log.levels.INFO, { clear = true })
-    end
-
-    -- Manually run vim.lsp.enable for all language servers that are not installed via Mason.
-    if not vim.tbl_isempty(servers.others) then
-      vim.notify("Enabling other LSPs", vim.log.levels.INFO, { clear = true })
-      vim.lsp.enable(vim.tbl_keys(servers.others))
-    end
+    -- -- Manually run vim.lsp.enable for all language servers that are not installed via Mason.
+    -- if not vim.tbl_isempty(servers.others) then
+    --   vim.notify("Enabling other LSPs", vim.log.levels.INFO, { clear = true })
+    --   vim.lsp.enable(vim.tbl_keys(servers.others))
+    -- end
   end,
 }
