@@ -23,6 +23,9 @@ return {
         visible = true,
         hide_hidden = false,
       },
+      never_show = {
+        ".DS_Store",
+      },
       window = {
         mappings = {
           ["\\"] = "close_window",

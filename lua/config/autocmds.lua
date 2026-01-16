@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 
     local my_detections = {
       {
-        detections = { "zsh" },
+        detections = { "zsh", "zprofile" },
         file_type = "zsh",
       },
       {
