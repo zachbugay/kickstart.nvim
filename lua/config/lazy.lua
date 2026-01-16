@@ -1,4 +1,3 @@
--- Not being used yet.
 ---@type string
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 

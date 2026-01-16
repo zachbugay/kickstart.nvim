@@ -1,4 +1,5 @@
-return { -- Autocompletion
+-- Autocompletion
+return {
   "saghen/blink.cmp",
   dependencies = {
     -- Snippet Engine
@@ -30,10 +31,9 @@ return { -- Autocompletion
     "folke/lazydev.nvim",
   },
   event = "VimEnter",
-  branch = "main",
-  build = "rustup run nightly cargo build --release",
-  -- --- @module 'blink.cmp'
-  -- --- @type blink.cmp.Config
+  version = "1.*",
+  --- @module 'blink.cmp'
+  --- @type blink.cmp.Config
   opts = {
     keymap = {
       -- 'default' (recommended) for mappings similar to built-in completions
@@ -66,7 +66,7 @@ return { -- Autocompletion
     appearance = {
       -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
       -- Adjusts spacing to ensure icons are aligned
-      nerd_font_variant = "normal",
+      nerd_font_variant = "mono",
     },
 
     completion = {
@@ -93,11 +93,7 @@ return { -- Autocompletion
     -- See :h blink-cmp-config-fuzzy for more information
     fuzzy = {
       implementation = "prefer_rust_with_warning",
-      prebuilt_binaries = {
-        download = false,
-      },
     },
-
     -- Shows a signature help window while you type arguments for a function
     signature = { enabled = true },
   },

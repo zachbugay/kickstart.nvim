@@ -1,5 +1,7 @@
 local mySysInfo = require("mysysinfo").new(vim.uv.os_uname())
 mySysInfo:useWindowsShell()
+-- print("mySysInfo.processor_architecture: " .. mySysInfo.processor_architecture)
+-- print(vim.print(vim.uv.os_uname()))
 
 -- [[ Setup my options, keymaps and other custom settings. ]]
 require("config.options")
