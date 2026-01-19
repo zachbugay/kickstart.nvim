@@ -245,16 +245,21 @@ return {
                 callSnippet = "Replace",
               },
               workspace = {
+                library = vim.api.nvim_get_runtime_file("", true), --Include runtime files
                 checkThirdParty = false,
               },
               -- You can toggle below to ignore lua_ls's noisy `missing-fields` warnings
-              diagnostics = { disable = { "missing-fields" } },
+              diagnostics = {
+                globals = { "vim" },
+                -- disable = { "missing-fields" },
+              },
             },
           },
         },
         roslyn = {},
         terraformls = {},
         tombi = {},
+        stylua = {},
       },
     }
 
@@ -272,25 +277,27 @@ return {
     -- You can add other tools here that you want Mason to install
     -- for you, so that they are available from within Neovim.
 
-    ---@type string[]
-    local ensure_installed = vim.tbl_keys(servers.mason or {})
-    vim.list_extend(ensure_installed, {
-      "stylua", -- Used to format Lua code
-    })
-
-    ---@param value string
-    ---@return boolean
-    local function x86_only(value)
-      ---@type string[]
-      local x86_lsps = { "clangd", "lua_ls", "stylua", "codebook", "harper_ls", "roslyn", "terraformls", "tombi" }
-      if string.find(vim.uv.os_uname().machine, "unknown") and (vim.tbl_contains(x86_lsps, value)) then
-        return false
-      end
-      return true
+    -- I have a difference here that I need to account for if I am on a win_arm64 pc.
+    ---@module "mason-tool-installer"
+    ---@type MasonToolEntry[]
+    local ensure_installed = {}
+    if vim.uv.os_uname().machine == "unknown" then
+      print("Machine is unknown. Defaulting to windows x64")
+      ensure_installed = {
+        "bicep",
+        { "clangd", target = "win_x64" },
+        { "codebook", target = "win_x64" },
+        { "harper_ls", target = "win_x64" },
+        { "lua_ls", target = "win_x64" },
+        { "roslyn", target = "win_x64" },
+        { "terraformls", target = "win_arm64" },
+        -- { "tombi", target = "win_x64" }, -- Not installing for some reason.
+        { "stylua", target = "win_x64" },
+      }
+    else
+      ensure_installed = vim.tbl_keys(servers.mason)
     end
 
-    ---@type string[]
-    ensure_installed = vim.tbl_filter(x86_only, ensure_installed)
     require("mason-tool-installer").setup({ ensure_installed = ensure_installed, auto_update = true })
 
     -- Either merge all additional server configs from the `servers.mason` and `servers.others` tables
