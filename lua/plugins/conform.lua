@@ -1,4 +1,5 @@
-return { -- Autoformat
+-- Autoformat
+return {
   "stevearc/conform.nvim",
   event = { "BufWritePre" },
   cmd = { "ConformInfo" },
@@ -39,24 +40,6 @@ return { -- Autoformat
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
       -- javascript = { "prettierd", "prettier", stop_after_first = true },
-    },
-    formatters = {
-      stylua = {
-        prepend_args = {
-          "--column-width",
-          "160",
-          "--line-endings",
-          "Unix",
-          "--indent-type",
-          "Spaces",
-          "--indent-width",
-          "2",
-          "--quote-style",
-          "AutoPreferDouble",
-          "--call-parentheses",
-          "Always",
-        },
-      },
     },
   },
 }

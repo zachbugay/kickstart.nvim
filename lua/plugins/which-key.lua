@@ -3,7 +3,7 @@ return {
   "folke/which-key.nvim",
   event = "VimEnter", -- Sets the loading event to 'VimEnter'
   ---@module "which-key"
-  ---class Opts
+  ---@type wk.Opts
   opts = {
     -- delay between pressing a key and opening which-key (milliseconds)
     -- this setting is independent of vim.o.timeoutlen

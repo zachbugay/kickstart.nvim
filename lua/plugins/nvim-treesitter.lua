@@ -1,6 +1,6 @@
 return { -- Highlight, edit, and navigate code
   "nvim-treesitter/nvim-treesitter",
-  -- branch = "main",
+  branch = "main",
   --  version = "false",
   lazy = false,
   build = ":TSUpdate",
@@ -42,11 +42,26 @@ return { -- Highlight, edit, and navigate code
       })
 
       -- ensure basic parser are installed
-      local parsers = { "bash", "c", "c_sharp", "diff", "html", "lua", "luadoc", "markdown", "markdown_inline", "query", "vim", "vimdoc" }
+      local parsers = {
+        "bash",
+        "c",
+        "c_sharp",
+        "diff",
+        "html",
+        "lua",
+        "luadoc",
+        "markdown",
+        "markdown_inline",
+        "query",
+        "vim",
+        "vimdoc",
+      }
       require("nvim-treesitter").install(parsers)
     end
   end,
   -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+  ---@module 'nvim-treesitter'
+  ---@type TSConfig
   opts = {
     ensure_installed = {
       "bash",
