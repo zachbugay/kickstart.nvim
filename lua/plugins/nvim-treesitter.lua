@@ -38,6 +38,13 @@ return {
           -- enable the parser if it is installed
           treesitter_try_attach(buf, language)
         elseif vim.tbl_contains(available_parsers, language) then
+          if vim.uv.os_uname().machine == "unknown" then
+            vim.api.nvim_echo({
+              { "Machine is unknown. Do not install and build parsers.", "WarningMsg" },
+            }, true, {})
+
+            return
+          end
           -- if a parser is available in `nvim-treesitter` enable it after ensuring it is installed
           require("nvim-treesitter").install(language):await(function()
             treesitter_try_attach(buf, language)
