@@ -33,6 +33,10 @@ vim.o.showmode = false
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.schedule(function()
+  vim.api.nvim_echo({
+    { "Syncing Clipboard...", "StdoutMsg" },
+  }, true, {})
+
   vim.o.clipboard = "unnamedplus"
 end)
 
