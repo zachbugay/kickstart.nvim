@@ -3,7 +3,7 @@ return {
   lazy = false,
   build = ":TSUpdate",
   branch = "main",
-  -- [[ Configure Treesitter ]] See `:help nvim-treesitter-intro`
+  -- NOTE: [[ Configure Treesitter ]] See `:help nvim-treesitter-intro`
   config = function()
     ---@param buf integer
     ---@param language string
@@ -36,15 +36,7 @@ return {
 
         if vim.tbl_contains(installed_parsers, language) then
           -- enable the parser if it is installed
-          treesitter_try_attach(buf, language)
-        elseif vim.tbl_contains(available_parsers, language) then
-          if vim.uv.os_uname().machine == "unknown" then
-            vim.api.nvim_echo({
-              { "Machine is unknown. Do not install and build parsers.", "WarningMsg" },
-            }, true, {})
-
-            return
-          end
+          -- treesitter_try_attach(buf, language)
           -- if a parser is available in `nvim-treesitter` enable it after ensuring it is installed
           require("nvim-treesitter").install(language):await(function()
             treesitter_try_attach(buf, language)
@@ -56,18 +48,24 @@ return {
       end,
     })
 
-    -- Do not install and build parsers if the machine is unknown. Just use the defaults, and not nvim-treesitter.
-    if vim.uv.os_uname().machine == "unknown" then
-      vim.api.nvim_echo({
-        { "Machine is unknown. Do not install and build parsers.", "WarningMsg" },
-      }, true, {})
-
-      return
-    end
-
     -- ensure basic parser are installed
-    local parsers =
-      { "bash", "c", "diff", "html", "lua", "luadoc", "markdown", "markdown_inline", "query", "vim", "vimdoc" }
+    local parsers = {
+      "bash",
+      "c",
+      "c_sharp",
+      "diff",
+      "dockerfile",
+      "html",
+      "lua",
+      "luadoc",
+      "markdown",
+      "markdown_inline",
+      "powershell",
+      "query",
+      "vim",
+      "vimdoc",
+      "zsh",
+    }
     require("nvim-treesitter").install(parsers)
   end,
 }

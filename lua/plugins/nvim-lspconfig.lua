@@ -22,7 +22,7 @@ return {
     },
     -- I believe these will be setup after neovim/nvim-lspconfig is setup because they do not have opt
     "mason-org/mason-lspconfig.nvim",
-    "zachbugay/mason-tool-installer.nvim",
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
 
     -- Useful status updates for LSP.
     { "j-hui/fidget.nvim", branch = "main", opts = {} }, -- Bleeding edge
@@ -288,13 +288,12 @@ return {
 
       ensure_installed = {
         "bicep",
-        { "clangd", target = "win_x64" },
         { "codebook", target = "win_x64" },
         { "harper_ls", target = "win_x64" },
         { "lua_ls", target = "win_x64" },
         { "roslyn", target = "win_x64" },
         { "terraformls", target = "win_arm64" },
-        -- { "tombi", target = "win_x64" }, -- Not installing for some reason.
+        -- { "tombi" }, -- Not installing for some reason.
         { "stylua", target = "win_x64" },
       }
     else

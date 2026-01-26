@@ -1,6 +1,15 @@
 local mySysInfo = require("mysysinfo").new(vim.uv.os_uname())
 mySysInfo:useWindowsShell()
 
+-- vim.uv.os_uname = function()
+--   return {
+--     machine = "arm64",
+--     release = "10.0.26200",
+--     sysname = "Windows_NT",
+--     version = "Windows 11 Enterprise",
+--   }
+-- end
+
 -- print("mySysInfo.processor_architecture: " .. mySysInfo.processor_architecture)
 -- print(vim.print(vim.uv.os_uname()))
 
