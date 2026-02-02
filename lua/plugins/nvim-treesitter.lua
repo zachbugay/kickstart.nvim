@@ -3,7 +3,7 @@ return {
   lazy = false,
   build = ":TSUpdate",
   branch = "main",
-  -- [[ Configure Treesitter ]] See `:help nvim-treesitter-intro`
+  -- NOTE: [[ Configure Treesitter ]] See `:help nvim-treesitter-intro`
   config = function()
     ---@param buf integer
     ---@param language string
@@ -18,7 +18,6 @@ return {
       -- enables treesitter based folds
       -- for more info on folds see `:help folds`
       vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-
       -- enables treesitter based indentation
       vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
     end
@@ -35,16 +34,6 @@ return {
         local installed_parsers = require("nvim-treesitter").get_installed("parsers")
 
         if vim.tbl_contains(installed_parsers, language) then
-          -- enable the parser if it is installed
-          treesitter_try_attach(buf, language)
-        elseif vim.tbl_contains(available_parsers, language) then
-          if vim.uv.os_uname().machine == "unknown" then
-            vim.api.nvim_echo({
-              { "Machine is unknown. Do not install and build parsers.", "WarningMsg" },
-            }, true, {})
-
-            return
-          end
           -- if a parser is available in `nvim-treesitter` enable it after ensuring it is installed
           require("nvim-treesitter").install(language):await(function()
             treesitter_try_attach(buf, language)
@@ -56,25 +45,23 @@ return {
       end,
     })
 
-    -- Do not install and build parsers if the machine is unknown. Just use the defaults, and not nvim-treesitter.
-    if vim.uv.os_uname().machine == "unknown" then
-      vim.api.nvim_echo({
-        { "Machine is unknown. Do not install and build parsers.", "WarningMsg" },
-      }, true, {})
-
-      return
-    end
-
     -- ensure basic parser are installed
     local parsers = {
       "bash",
+      "bicep",
+      "c",
       "c",
       "c_sharp",
       "cpp",
+      "css",
       "diff",
+      "diff",
+      "dockerfile",
       "gitcommit",
       "go",
+      "gotmpl",
       "graphql",
+      "html",
       "html",
       "java",
       "javascript",
@@ -82,20 +69,30 @@ return {
       "json5",
       "jsonc",
       "lua",
+      "luadoc",
       "markdown",
       "markdown_inline",
+      "powershell",
       "python",
       "query",
       "rasi",
+      "razor",
       "regex",
       "rust",
       "scss",
+      "sql",
+      "ssh_config",
+      "terraform",
       "toml",
       "tsx",
       "typescript",
       "vim",
+      "vim",
       "vimdoc",
+      "vimdoc",
+      "xml",
       "yaml",
+      "zsh",
     }
     require("nvim-treesitter").install(parsers)
   end,
