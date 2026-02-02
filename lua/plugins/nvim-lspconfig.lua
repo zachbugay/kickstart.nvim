@@ -256,9 +256,11 @@ return {
             },
           },
         },
+        prettier = {},
         roslyn = {},
         terraformls = {},
         tombi = {},
+        shfmt = {},
         stylua = {},
       },
     }
