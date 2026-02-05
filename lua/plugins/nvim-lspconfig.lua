@@ -224,6 +224,7 @@ return {
           },
         },
         codebook = {},
+        docker_language_server = {},
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
