@@ -30,8 +30,9 @@ return {
         require_cwd = false,
         append_args = function(self, ctx)
           local ft = vim.bo[ctx.buf].filetype
+          local path = vim.fs.joinpath(vim.uv.os_homedir(), ".config", "prettier", ".prettierrc.yaml")
           if ft == "ps1" then
-            return { "--config", vim.uv.os_homedir() .. "/.config/prettier/.prettierrc.yaml" }
+            return { "--config", path }
           end
           return {}
         end,
