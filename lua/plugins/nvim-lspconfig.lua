@@ -301,6 +301,7 @@ return {
         { "lua_ls", target = "win_x64" },
         { "roslyn", target = "win_x64" },
         { "terraformls", target = "win_arm64" },
+        { "prettier" },
         -- { "tombi" }, -- Not installing for some reason.
         { "stylua", target = "win_x64" },
       }
