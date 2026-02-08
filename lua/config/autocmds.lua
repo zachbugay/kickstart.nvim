@@ -29,6 +29,10 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
         detections = { "ps1", "powershell" },
         file_type = "ps1",
       },
+      {
+        detections = { "mk" },
+        file_type = "make",
+      },
     }
 
     for _, detection in ipairs(my_detections) do
