@@ -1,5 +1,5 @@
 local mySysInfo = require("mysysinfo").new(vim.uv.os_uname())
-mySysInfo:useWindowsShell()
+-- mySysInfo:useWindowsShell()
 
 -- vim.uv.os_uname = function()
 --   return {

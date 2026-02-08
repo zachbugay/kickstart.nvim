@@ -18,7 +18,7 @@ return {
   opts = {
     notify_on_error = false,
     notify_no_formatters = true,
-    log_level = vim.log.levels.INFO,
+    log_level = vim.log.levels.DEBUG,
     format_on_save = function(bufnr)
       return {
         timeout_ms = 500,
@@ -26,22 +26,36 @@ return {
       }
     end,
     formatters = {
-      -- Require a Prettier configuration file to format.
-      prettier = { require_cwd = true },
+      prettier = {
+        require_cwd = false,
+        append_args = function(self, ctx)
+          local ft = vim.bo[ctx.buf].filetype
+          if ft == "ps1" then
+            return { "--config", vim.uv.os_homedir() .. "/.config/prettier/.prettierrc.yaml" }
+          end
+          return {}
+        end,
+        options = {
+          ext_parsers = {
+            ps1 = "powershell",
+          },
+        },
+      },
     },
     formatters_by_ft = {
-      javascript = { "prettier", name = "dprint", timeout_ms = 500, lsp_format = "fallback" },
-      javascriptreact = { "prettier", name = "dprint", timeout_ms = 500, lsp_format = "fallback" },
-      json = { "prettier", name = "dprint", timeout_ms = 500, lsp_format = "fallback" },
-      jsonc = { "prettier", name = "dprint", timeout_ms = 500, lsp_format = "fallback" },
+      ["_"] = { "trim_whitespace" },
+      javascript = { "prettier", name = "dprint" },
+      javascriptreact = { "prettier", name = "dprint" },
+      json = { "prettier", name = "dprint" },
+      jsonc = { "prettier", name = "dprint" },
       lua = { "stylua" },
       markdown = { "prettier" },
+      ps1 = { "prettier", name = "dprint", timeout_ms = 1000 },
       scss = { "prettier" },
       sh = { "shfmt" },
-      typescript = { "prettier", name = "dprint", timeout_ms = 500, lsp_format = "fallback" },
-      typescriptreact = { "prettier", name = "dprint", timeout_ms = 500, lsp_format = "fallback" },
+      typescript = { "prettier", name = "dprint" },
+      typescriptreact = { "prettier", name = "dprint" },
       yaml = { "prettier" },
-      ["_"] = { "trim_whitespace" },
     },
   },
 }
