@@ -227,7 +227,7 @@ return {
         docker_language_server = {},
         dprint = {
           settings = {
-            config = "C:/Users/zacharybugay/.config/dprint/dprint.jsonc",
+            config = vim.uv.os_homedir() .. "/.config/dprint/dprint.jsonc",
           },
         },
         -- gopls = {},
