@@ -21,7 +21,7 @@ return {
     log_level = vim.log.levels.DEBUG,
     format_on_save = function(bufnr)
       return {
-        timeout_ms = 500,
+        timeout_ms = 1000,
         lsp_format = "fallback",
       }
     end,
@@ -51,9 +51,10 @@ return {
       jsonc = { "prettier", name = "dprint" },
       lua = { "stylua" },
       markdown = { "prettier" },
-      ps1 = { "prettier", name = "dprint", timeout_ms = 1000 },
+      ps1 = { "prettier", name = "dprint" },
       scss = { "prettier" },
       sh = { "shfmt" },
+      terraform = { "terraform_fmt" },
       typescript = { "prettier", name = "dprint" },
       typescriptreact = { "prettier", name = "dprint" },
       yaml = { "prettier" },
