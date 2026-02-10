@@ -1,2 +1,6 @@
+# macOS ignore
 .DS_Store
+
+# Use different machines.
+lazy-lock.json
 
