@@ -7,7 +7,8 @@ return {
   config = function()
     ---@param buf integer
     ---@param language string
-    local function treesitter_try_attach(buf, language)
+    ---@param indentexpr string
+    local function treesitter_try_attach(buf, language, indentexpr)
       -- check if parser exists and load it
       if not vim.treesitter.language.add(language) then
         return
@@ -18,8 +19,9 @@ return {
       -- enables treesitter based folds
       -- for more info on folds see `:help folds`
       vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+
       -- enables treesitter based indentation
-      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      vim.bo.indentexpr = indentexpr
     end
 
     local available_parsers = require("nvim-treesitter").get_available()
@@ -27,8 +29,19 @@ return {
       callback = function(args)
         local buf, filetype = args.buf, args.match
         local language = vim.treesitter.language.get_lang(filetype)
+
         if not language then
           return
+        end
+
+        local indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
+        local default_indent_langs = {
+          zsh = true,
+        }
+
+        if default_indent_langs[language] then
+          indentexpr = ""
         end
 
         local installed_parsers = require("nvim-treesitter").get_installed("parsers")
@@ -36,11 +49,11 @@ return {
         if vim.tbl_contains(installed_parsers, language) then
           -- if a parser is available in `nvim-treesitter` enable it after ensuring it is installed
           require("nvim-treesitter").install(language):await(function()
-            treesitter_try_attach(buf, language)
+            treesitter_try_attach(buf, language, indentexpr)
           end)
         else
           -- try to enable treesitter features in case the parser exists but is not available from `nvim-treesitter`
-          treesitter_try_attach(buf, language)
+          treesitter_try_attach(buf, language, indentexpr)
         end
       end,
     })
