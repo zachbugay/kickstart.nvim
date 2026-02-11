@@ -28,7 +28,46 @@ return {
   },
   event = "VimEnter",
   branch = "main",
-  build = "rustup run nightly cargo build --release",
+  build = function(plugin)
+    if vim.uv.os_uname().sysname ~= "Windows_NT" then
+      vim.system({ "rustup", "run", "nightly", "cargo", "build", "--release" }, { cwd = plugin.dir }):wait()
+    end
+    local log_file = require("blink.cmp.fuzzy.build.log")
+    local log = log_file.create()
+    log.write("Starting Windows build.\n")
+
+    local vswhere = vim.fn.expand("$ProgramFiles (x86)/Microsoft Visual Studio/Installer/vswhere.exe")
+    log.write("vswhere path: " .. vswhere .. "\n")
+
+    local obj =
+      vim.system({ vswhere, "-latest", "-products", "*", "-prerelease", "-property", "installationPath" }):wait()
+    local vsPath = (obj.stdout or ""):gsub("%s+$", "")
+
+    if vsPath == "" then
+      local message = "Could not locate Visual Studio installation via vswhere!"
+      log.write(message)
+      vim.notify(message, vim.log.levels.ERROR)
+      return
+    end
+
+    local vsDevCmd = vsPath .. "\\Common7\\tools\\VsDevCmd.bat"
+
+    local cmd = string.format('cmd /C ""%s" && rustup run nightly cargo build --release', vsDevCmd)
+    local bat_filename = os.tmpname() .. ".bat"
+    local bat_handler = io.open(bat_filename, "w+")
+    bat_handler:write(string.format('@call "%s"\n@rustup run nightly cargo build --release\n', vsDevCmd))
+    bat_handler:close()
+    local obj = vim.system({ "cmd", "/C", bat_filename }, { cwd = plugin.dir }):wait()
+    os.remove(bat_filename)
+
+    if obj.code == 0 then
+      vim.notify("Building blink.cmp done", vim.log.levels.INFO)
+    else
+      vim.notify("Building blink.cmp failed:\n" .. (obj.stderr or ""), vim.log.levels.ERROR)
+    end
+
+    log.close()
+  end,
   --- @module 'blink.cmp'
   --- @type blink.cmp.Config
   opts = {
