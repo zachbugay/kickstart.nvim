@@ -30,8 +30,20 @@ return {
   branch = "main",
   build = function(plugin)
     if vim.uv.os_uname().sysname ~= "Windows_NT" then
-      vim.system({ "rustup", "run", "nightly", "cargo", "build", "--release" }, { cwd = plugin.dir }):wait()
+      local on_exit = function(obj)
+        if obj.code == 0 then
+          return
+        end
+        print(obj.code)
+        print(obj.signal)
+        print(obj.stdout)
+        print(obj.stderr)
+      end
+      -- Runs asynchronously:
+      vim.system({ "rustup", "run", "nightly", "cargo", "build", "--release" }, { cwd = plugin.dir }, on_exit)
+      return
     end
+
     local log_file = require("blink.cmp.fuzzy.build.log")
     local log = log_file.create()
     log.write("Starting Windows build.\n")
